@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Textarea } from "@/components/ui/textarea";
 
+// Define the schema for form validation
 const formSchema = z.object({
   targetAudience: z.object({
     age: z.string().min(1, "Age range is required"),
@@ -39,8 +40,14 @@ const websiteFeatures = [
   { id: "reviews", label: "Customer Reviews" },
 ];
 
-export default function WebsiteForm({ onSubmit }) {
-  const form = useForm<z.infer<typeof formSchema>>({
+type FormData = z.infer<typeof formSchema>;
+
+interface WebsiteFormProps {
+  onSubmit: (data: FormData) => void;
+}
+
+export default function WebsiteForm({ onSubmit }: WebsiteFormProps) {
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       targetAudience: {
@@ -60,11 +67,10 @@ export default function WebsiteForm({ onSubmit }) {
     },
   });
 
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log("Form data:", data); // For debugging
+  const handleSubmit = (data: FormData) => {
+    console.log("Form data:", data); 
     onSubmit(data);
   };
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">

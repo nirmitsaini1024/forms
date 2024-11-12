@@ -17,8 +17,14 @@ const formSchema = z.object({
   secondaryLanguages: z.string().optional(),
 });
 
-export default function BusinessForm({ onSubmit }) {
-  const form = useForm<z.infer<typeof formSchema>>({
+type FormData = z.infer<typeof formSchema>;
+
+interface BusinessFormProps {
+  onSubmit: (data: FormData) => void;
+}
+
+export default function BusinessForm({ onSubmit }: BusinessFormProps) {
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       businessName: "",

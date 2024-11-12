@@ -33,6 +33,12 @@ const formSchema = z.object({
   finalNotes: z.string().optional(),
 });
 
+type FormData = z.infer<typeof formSchema>;
+
+type MarketingFormProps = {
+  onSubmit: (data: FormData) => void;
+};
+
 const socialPlatforms = [
   { id: "instagram", label: "Instagram" },
   { id: "facebook", label: "Facebook" },
@@ -54,8 +60,8 @@ const kpiOptions = [
   { id: "retention", label: "Customer Retention" },
 ];
 
-export default function MarketingForm({ onSubmit }) {
-  const form = useForm<z.infer<typeof formSchema>>({
+export default function MarketingForm({ onSubmit }: MarketingFormProps) {
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       socialMedia: [],
